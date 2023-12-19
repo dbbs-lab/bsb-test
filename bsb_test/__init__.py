@@ -1,6 +1,11 @@
 """
 Helpers for better and more complete tests for component developers of the BSB framework.
 """
+import unittest
+
+import requests
+from bsb.storage._files import UrlScheme
+
 from .parallel import *
 from bsb.core import Scaffold as _Scaffold
 from bsb.storage import (
@@ -14,7 +19,7 @@ import numpy as _np
 import glob as _glob
 import os as _os
 
-__version__ = "0.0.0b0"
+__version__ = "0.0.0b1"
 
 
 class NetworkFixture:
@@ -184,3 +189,23 @@ def get_morphology_path(file):
 
 def get_all_morphology_paths(suffix=""):
     yield from _glob.glob(get_data_path("morphologies", "*" + suffix))
+
+
+def skipIfOffline(url=None, scheme: UrlScheme = None):
+    if scheme is not None:
+        err_msg = f"{type(scheme).__name__} service unavailable."
+        session_ctx = scheme.create_session()
+    else:
+        err_msg = f"'{url}' service unavailable"
+        session_ctx = requests.Session()
+    try:
+        url = url or scheme.get_base_url()
+    except NotImplementedError:
+        raise ValueError("Couldn't establish base URL to ping for health check.")
+    try:
+        with session_ctx as session:
+            res = session.get(url)
+            offline = res.status_code != 200 or "Service Interruption Notice"
+    except Exception:
+        offline = True
+    return unittest.skipIf(offline, err_msg)
