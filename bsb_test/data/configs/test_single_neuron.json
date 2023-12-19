@@ -43,45 +43,6 @@
 
   },
   "simulations": {
-    "test_single_neuron": {
-      "simulator": "nest",
-      "duration": 10,
-      "resolution": 1.0,
-      "cell_models": {
-        "test_cell": {
-          "model": "iaf_cond_alpha",
-          "constants": {
-            "t_ref": 1.5,
-            "C_m": 7.0,
-            "V_th": -41.0,
-            "V_reset": -70.0,
-            "E_L": -62.0,
-            "I_e": 0.0
-          }
-        },
-        "eglif_cell": {
-          "cell_type": "test_cell",
-          "model": "eglif_cond_alpha_multisyn",
-          "constants": {
-            "Vinit": -62.0,
-            "lambda_0":1.0,
-            "tau_V":0.3,
-            "tau_m": 24.15,
-            "I_e": -0.888,
-            "kadap": 0.022,
-            "k1": 0.311,
-            "k2": 0.041,
-            "A1": 0.01,
-            "A2":-0.94
-          }
-        }
-      },
-      "connection_models": {
 
-      },
-      "devices": {
-
-      }
-    }
   }
 }
