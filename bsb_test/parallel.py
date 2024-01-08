@@ -93,6 +93,7 @@ def timeout(timeout, abort=False):
                     import traceback, sys
                     errlines = traceback.format_exception(type(e), e, e.__traceback__)
                     print(
+                        "--- EXCEPTION UNDER MPI (ABORTING) ---\n",
                         *errlines,
                         file=sys.stderr,
                         flush=True,
