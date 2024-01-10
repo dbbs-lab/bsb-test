@@ -89,16 +89,18 @@ def timeout(timeout, abort=False):
                     del _exc_threads[hash(thread)]
                     raise e
             except Exception as e:
-                import traceback, sys
-
-                errlines = traceback.format_exception(type(e), e, e.__traceback__)
-                print(
-                    *errlines,
-                    file=sys.stderr,
-                    flush=True,
-                )
                 if MPI.get_size() > 1:
+                    import traceback, sys
+                    errlines = traceback.format_exception(type(e), e, e.__traceback__)
+                    print(
+                        "--- EXCEPTION UNDER MPI (ABORTING) ---\n",
+                        *errlines,
+                        file=sys.stderr,
+                        flush=True,
+                    )
                     MPI.abort(1)
+                else:
+                    raise
 
         return timed_f
 
