@@ -8,6 +8,7 @@ from bsb.storage._files import UrlScheme
 
 from pathlib import Path
 
+from .pyconfig import get_test_config, get_all_test_configs, list_test_configs
 from .parallel import *
 from bsb.core import Scaffold as _Scaffold
 from bsb.morphologies import parse_morphology_file
@@ -22,7 +23,7 @@ import numpy as _np
 import glob as _glob
 import os as _os
 
-__version__ = "0.0.0b4"
+__version__ = "0.0.0b5"
 
 
 class NetworkFixture:
