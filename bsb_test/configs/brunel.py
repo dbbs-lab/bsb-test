@@ -1,3 +1,5 @@
+required_plugins = ["bsb-hdf5", "bsb-nest"]
+
 tree = {
     "storage": {"engine": "hdf5"},
     "network": {"x": 50.0, "y": 50.0, "z": 50.0, "chunk_size": 50},

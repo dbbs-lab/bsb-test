@@ -8,7 +8,7 @@ from bsb.storage._files import UrlScheme
 
 from pathlib import Path
 
-from .pyconfig import get_test_config, get_all_test_configs, list_test_configs
+from .configs import get_test_config, get_test_configs, list_test_configs, get_test_config_tree
 from .parallel import *
 from bsb.core import Scaffold as _Scaffold
 from bsb.morphologies import parse_morphology_file
@@ -165,10 +165,6 @@ def get_data_path(*paths):
             *paths,
         )
     )
-
-
-def get_config_path(file):
-    return get_data_path("configs", file + (".json" if not file.endswith(".json") else ""))
 
 
 def get_morphology_path(file):
