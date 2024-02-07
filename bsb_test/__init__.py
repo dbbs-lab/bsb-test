@@ -112,6 +112,15 @@ class FixedPosConfigFixture:
         super().setUp()
 
 
+class ConfigFixture:
+    def __init_subclass__(cls, config=None, **kwargs):
+        cls._pycfg_name = config
+
+    def setUp(self):
+        self.cfg = get_test_config(self._pycfg_name)
+        super().setUp()
+
+
 class MorphologiesFixture:
     def __init_subclass__(cls, morpho_filters=None, morpho_suffix="swc", **kwargs):
         super().__init_subclass__(**kwargs)
