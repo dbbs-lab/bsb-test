@@ -23,7 +23,7 @@ import numpy as _np
 import glob as _glob
 import os as _os
 
-__version__ = "0.0.0b5"
+__version__ = "0.0.0b6"
 
 
 class NetworkFixture:

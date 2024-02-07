@@ -1,7 +1,7 @@
-required_plugins = ["bsb-hdf5"]
+required_plugins = []
 
 tree = {
-    "storage": {"engine": "hdf5"},
+    "storage": {"engine": "fs"},
     "network": {"x": 150.0, "y": 150.0, "z": 150.0, "chunk_size": [150, 150, 150]},
     "regions": {"test_region": {"children": ["test_layer"]}},
     "partitions": {"test_layer": {"thickness": 100.0}},

@@ -1,7 +1,7 @@
-required_plugins = ["bsb-hdf5", "bsb-neuron"]
+required_plugins = ["bsb-neuron"]
 
 tree = {
-    "storage": {"engine": "hdf5"},
+    "storage": {"engine": "fs"},
     "network": {"x": 150, "y": 150, "z": 150},
     "partitions": {},
     "cell_types": {},

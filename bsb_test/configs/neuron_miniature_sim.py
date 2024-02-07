@@ -1,8 +1,8 @@
-required_plugins = ["bsb-hdf5", "bsb-neuron"]
+required_plugins = ["bsb-neuron"]
 
 tree = {
     "name": "Test miniature NEURON network",
-    "storage": {"engine": "hdf5", "root": "nrn_miniature.hdf5"},
+    "storage": {"engine": "fs", "root": "nrn_miniature.hdf5"},
     "network": {"x": 150.0, "y": 600, "z": 150.0},
     "regions": {"cerebellar_cortex": {"children": ["test_layer"]}},
     "partitions": {"test_layer": {"thickness": 600, "z_index": 0}},

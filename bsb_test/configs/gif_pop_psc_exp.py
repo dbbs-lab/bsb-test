@@ -1,7 +1,7 @@
-required_plugins = ["bsb-hdf5", "bsb-nest"]
+required_plugins = ["bsb-nest"]
 
 tree = {
-    "storage": {"engine": "hdf5"},
+    "storage": {"engine": "fs"},
     "network": {"x": 50.0, "y": 50.0, "z": 50.0, "chunk_size": 50},
     "partitions": {"any": {"type": "layer", "thickness": 50}},
     "cell_types": {"gif_pop_psc_exp": {"spatial": {"radius": 1, "count": 1}}},

@@ -1,8 +1,8 @@
-required_plugins = ["bsb-hdf5"]
+required_plugins = []
 
 tree = {
     "name": "Test multiple cell types",
-    "storage": {"engine": "hdf5"},
+    "storage": {"engine": "fs"},
     "network": {"x": 100.0, "y": 50.0, "z": 100.0, "chunk_size": [50, 50, 50]},
     "partitions": {"test_layer": {"thickness": 50}},
     "cell_types": {

@@ -1,8 +1,8 @@
-required_plugins = ["bsb-hdf5"]
+required_plugins = []
 
 tree = {
     "name": "Test config v4",
-    "storage": {"engine": "hdf5"},
+    "storage": {"engine": "fs"},
     "network": {"x": 400.0, "y": 400.0, "z": 400.0},
     "regions": {
         "some_brain": {"type": "stack", "children": ["some_cortex", "some_olive"]},
