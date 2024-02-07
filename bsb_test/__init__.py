@@ -28,13 +28,17 @@ __version__ = "0.0.0b6"
 
 class NetworkFixture:
     def setUp(self):
-        super().setUp()
         kwargs = {}
-        if hasattr(self, "cfg"):
+        try:
             kwargs["config"] = self.cfg
-        if hasattr(self, "storage"):
+        except Exception:
+            pass
+        try:
             kwargs["storage"] = self.storage
+        except Exception:
+            pass
         self.network = _Scaffold(**kwargs)
+        super().setUp()
 
 
 class RandomStorageFixture:
@@ -48,14 +52,14 @@ class RandomStorageFixture:
 
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
         if cls._setup_cls:
             cls.storage = cls.random_storage()
+        super().setUpClass()
 
     def setUp(self):
-        super().setUp()
         if not self._setup_cls:
             self.storage = self.random_storage()
+        super().setUp()
 
     @classmethod
     def tearDownClass(cls):
@@ -78,7 +82,6 @@ class RandomStorageFixture:
 
 class FixedPosConfigFixture:
     def setUp(self):
-        super().setUp()
         self.cfg = _Configuration.default(
             cell_types=dict(test_cell=dict(spatial=dict(radius=2, count=100))),
             placement=dict(
@@ -106,6 +109,7 @@ class FixedPosConfigFixture:
                 )
             )
         )
+        super().setUp()
 
 
 class MorphologiesFixture:
@@ -115,7 +119,6 @@ class MorphologiesFixture:
         cls._morpho_filters = morpho_filters
 
     def setUp(self):
-        super().setUp()
         if not hasattr(self, "network"):
             raise FixtureError(f"{self.__class__.__name__} uses MorphologiesFixture, which requires a network fixture.")
         if MPI.get_rank():
@@ -129,6 +132,7 @@ class MorphologiesFixture:
                 else:
                     self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath, parser="morphio"))
             MPI.barrier()
+        super().setUp()
 
 
 class NumpyTestCase:
