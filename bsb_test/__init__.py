@@ -114,6 +114,7 @@ class FixedPosConfigFixture:
 
 class ConfigFixture:
     def __init_subclass__(cls, config=None, **kwargs):
+        super().__init_subclass__(**kwargs)
         cls._pycfg_name = config
 
     def setUp(self):

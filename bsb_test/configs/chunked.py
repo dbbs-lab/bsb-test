@@ -17,7 +17,7 @@ tree = {
     },
     "placement": {
         "across_chunks": {
-            "strategy": "bsb.placement.FixesPosPlacement",
+            "strategy": "bsb.placement.FixedPositions",
             "cell_types": ["A", "B", "C"],
             "partitions": [],
             "positions": [
@@ -36,6 +36,39 @@ tree = {
             ],
         }
     },
-    "connectivity": {""},
+    "connectivity": {
+        "A_to_B": {
+            "strategy": "bsb_test.debug.FixedConnectivity",
+            "presynaptic": {"cell_types": ["A"]},
+            "postsynaptic": {"cell_types": ["B"]},
+            "connections": [
+                [0, 0, 0, 0, 0, 0],
+                [1, 0, 0, 0, 0, 0],
+                [1, 0, 0, 3, 0, 0],
+                [3, 0, 0, 8, 0, 0],
+                [5, 0, 0, 2, 0, 0],
+            ],
+        },
+        "B_to_C": {
+            "strategy": "bsb_test.debug.FixedConnectivity",
+            "presynaptic": {"cell_types": ["A"]},
+            "postsynaptic": {"cell_types": ["B"]},
+            "connections": [
+                [5, 0, 0, 9, 0, 0],
+                [5, 0, 0, 10, 0, 0],
+                [5, 0, 0, 11, 0, 0],
+            ],
+        },
+        "C_to_A": {
+            "strategy": "bsb_test.debug.FixedConnectivity",
+            "presynaptic": {"cell_types": ["A"]},
+            "postsynaptic": {"cell_types": ["B"]},
+            "connections": [
+                [1, 0, 0, 5, 0, 0],
+                [5, 0, 0, 1, 0, 0],
+                [5, 0, 0, 11, 0, 0],
+            ],
+        },
+    },
     "simulations": {},
 }
