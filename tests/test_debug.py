@@ -22,8 +22,8 @@ class TestChunked(
             [
                 [0, 0, 0],
                 [1, 0, 0],
-                [5, 0, 0],
                 [1, 0, 0],
+                [5, 0, 0],
                 [3, 0, 0],
             ],
             pre,
@@ -33,8 +33,8 @@ class TestChunked(
             [
                 [0, 0, 0],
                 [0, 0, 0],
-                [2, 0, 0],
                 [3, 0, 0],
+                [2, 0, 0],
                 [8, 0, 0],
             ],
             post,
@@ -61,16 +61,16 @@ class TestChunked(
         pre, post = self.network.get_connectivity_set("C_to_A").load_connections().all()
         self.assertClose(
             [
-                [5, 0, 0],
                 [1, 0, 0],
+                [5, 0, 0],
                 [5, 0, 0],
             ],
             pre,
         )
         self.assertClose(
             [
-                [1, 0, 0],
                 [5, 0, 0],
+                [1, 0, 0],
                 [11, 0, 0],
             ],
             post,
