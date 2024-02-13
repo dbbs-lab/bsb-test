@@ -1,9 +1,9 @@
-import unittest as _unittest
+import http.client as _http
 import inspect as _inspect
 import threading as _threading
-import http.client as _http
-from bsb.services import MPI
+import unittest as _unittest
 
+from bsb.services import MPI
 
 _mpi_size = MPI.get_size()
 
@@ -90,7 +90,9 @@ def timeout(timeout, abort=False):
                     raise e
             except Exception as e:
                 if MPI.get_size() > 1:
-                    import traceback, sys
+                    import sys
+                    import traceback
+
                     errlines = traceback.format_exception(type(e), e, e.__traceback__)
                     print(
                         "--- EXCEPTION UNDER MPI (ABORTING) ---\n",
