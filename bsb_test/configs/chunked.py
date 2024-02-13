@@ -2,7 +2,7 @@ required_plugins = []
 
 tree = {
     "storage": {"engine": "fs"},
-    "network": {"x": 100, "y": 100, "z": 50},
+    "network": {"x": 100, "y": 100, "z": 50, "chunk_size": [50, 50, 50]},
     "partitions": {},
     "cell_types": {
         "A": {
@@ -51,8 +51,8 @@ tree = {
         },
         "B_to_C": {
             "strategy": "bsb_test.debug.FixedConnectivity",
-            "presynaptic": {"cell_types": ["A"]},
-            "postsynaptic": {"cell_types": ["B"]},
+            "presynaptic": {"cell_types": ["B"]},
+            "postsynaptic": {"cell_types": ["C"]},
             "connections": [
                 [5, 0, 0, 9, 0, 0],
                 [5, 0, 0, 10, 0, 0],
@@ -61,8 +61,8 @@ tree = {
         },
         "C_to_A": {
             "strategy": "bsb_test.debug.FixedConnectivity",
-            "presynaptic": {"cell_types": ["A"]},
-            "postsynaptic": {"cell_types": ["B"]},
+            "presynaptic": {"cell_types": ["C"]},
+            "postsynaptic": {"cell_types": ["A"]},
             "connections": [
                 [1, 0, 0, 5, 0, 0],
                 [5, 0, 0, 1, 0, 0],

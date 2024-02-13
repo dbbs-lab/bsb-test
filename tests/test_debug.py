@@ -17,9 +17,7 @@ class TestChunked(
         self.network.compile(clear=True)
 
     def test_fixed_connectivity(self):
-        cs = self.network.get_connectivity_set("A_to_B")
-
-        pre, post = cs.load_connections().all()
+        pre, post = self.network.get_connectivity_set("A_to_B").load_connections().all()
         self.assertClose(
             [
                 [0, 0, 0],
@@ -27,12 +25,6 @@ class TestChunked(
                 [5, 0, 0],
                 [1, 0, 0],
                 [3, 0, 0],
-                [5, 0, 0],
-                [5, 0, 0],
-                [5, 0, 0],
-                [5, 0, 0],
-                [1, 0, 0],
-                [5, 0, 0],
             ],
             pre,
         )
@@ -44,9 +36,39 @@ class TestChunked(
                 [2, 0, 0],
                 [3, 0, 0],
                 [8, 0, 0],
+            ],
+            post,
+        )
+
+        pre, post = self.network.get_connectivity_set("B_to_C").load_connections().all()
+        self.assertClose(
+            [
+                [5, 0, 0],
+                [5, 0, 0],
+                [5, 0, 0],
+            ],
+            pre,
+        )
+        self.assertClose(
+            [
                 [9, 0, 0],
                 [10, 0, 0],
                 [11, 0, 0],
+            ],
+            post,
+        )
+
+        pre, post = self.network.get_connectivity_set("C_to_A").load_connections().all()
+        self.assertClose(
+            [
+                [5, 0, 0],
+                [1, 0, 0],
+                [5, 0, 0],
+            ],
+            pre,
+        )
+        self.assertClose(
+            [
                 [1, 0, 0],
                 [5, 0, 0],
                 [11, 0, 0],
