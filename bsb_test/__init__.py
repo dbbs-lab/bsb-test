@@ -26,7 +26,7 @@ from .configs import (
 )
 from .parallel import *
 
-__version__ = "0.0.0b8"
+__version__ = "0.0.0b9"
 
 
 class NetworkFixture:

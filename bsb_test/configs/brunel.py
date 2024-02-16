@@ -97,10 +97,8 @@ tree = {
                     "device": "poisson_generator",
                     "rate": 17789.007714721884,
                     "targetting": {"strategy": "all"},
-                    "$import": {
-                        "ref": "#../../connection_models/excitatory_to_excitatory/synapse",
-                        "values": ["weight", "delay"],
-                    },
+                    "weight": 20.68015524367846,
+                    "delay": 1.5,
                 },
                 "sr_exc": {
                     "device": "spike_recorder",

@@ -3,7 +3,10 @@ import pathlib
 
 
 def get_test_config_module(name: str):
-    return importlib.import_module(f".{name}", package=get_test_config.__module__)
+    try:
+        return importlib.import_module(f".{name}", package=get_test_config.__module__)
+    except Exception as e:
+        raise ValueError(f"'{name}' is not a known test configuration.") from e
 
 
 def get_test_config_tree(name: str):
