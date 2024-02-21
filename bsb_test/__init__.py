@@ -4,6 +4,7 @@ Helpers for better and more complete tests for component developers of the BSB f
 
 import glob as _glob
 import os as _os
+import typing
 import unittest
 from pathlib import Path
 
@@ -11,7 +12,6 @@ import numpy as _np
 import requests
 from bsb.config import Configuration as _Configuration
 from bsb.core import Scaffold as _Scaffold
-from bsb.exceptions import FixtureError
 from bsb.morphologies import parse_morphology_file
 from bsb.storage import Chunk as _Chunk
 from bsb.storage import Storage as _Storage
@@ -24,12 +24,21 @@ from .configs import (
     get_test_configs,
     list_test_configs,
 )
+from .exceptions import FixtureError
 from .parallel import *
+
+if typing.TYPE_CHECKING:
+    from bsb.config import Configuration
+    from bsb.core import Scaffold
+    from bsb.storage import Storage
+
 
 __version__ = "0.0.0b9"
 
 
 class NetworkFixture:
+    network: "Scaffold"
+
     def setUp(self):
         kwargs = {}
         try:
@@ -45,6 +54,8 @@ class NetworkFixture:
 
 
 class RandomStorageFixture:
+    storage: "Storage"
+
     def __init_subclass__(cls, root_factory=None, debug=False, setup_cls=False, *, engine_name, **kwargs):
         super().__init_subclass__(**kwargs)
         cls._engine = engine_name
@@ -84,6 +95,8 @@ class RandomStorageFixture:
 
 
 class FixedPosConfigFixture:
+    cfg: "Configuration"
+
     def setUp(self):
         self.cfg = _Configuration.default(
             cell_types=dict(test_cell=dict(spatial=dict(radius=2, count=100))),

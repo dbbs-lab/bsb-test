@@ -61,18 +61,21 @@ def multi_process_test(o):
 _exc_threads = {}
 
 
-def _excepthook(args, /):
-    h = hash(args.thread)
-    _exc_threads[h] = args.exc_value
+def _excepthook(f):
+    def catcher(*args, **kwargs):
+        try:
+            f(*args, **kwargs)
+        except Exception as e:
+            h = hash(_threading.current_thread())
+            _exc_threads[h] = e
 
-
-_threading.excepthook = _excepthook
+    return catcher
 
 
 def timeout(timeout, abort=False):
     def decorator(f):
         def timed_f(*args, **kwargs):
-            thread = _threading.Thread(target=f, args=args, kwargs=kwargs)
+            thread = _threading.Thread(target=_excepthook(f), args=args, kwargs=kwargs)
             thread.start()
             thread.join(timeout=timeout)
             try:
@@ -89,7 +92,7 @@ def timeout(timeout, abort=False):
                     del _exc_threads[hash(thread)]
                     raise e
             except Exception as e:
-                if MPI.get_size() > 1:
+                if MPI.get_size() > 1 and abort:
                     import sys
                     import traceback
 
