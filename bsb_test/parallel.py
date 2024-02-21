@@ -1,5 +1,4 @@
 import http.client as _http
-import inspect as _inspect
 import threading as _threading
 import unittest as _unittest
 
@@ -26,36 +25,12 @@ def skip_nointernet(o):
     return _unittest.skipIf(not internet_connection(), "Internet connection required.")(o)
 
 
+def skip_serial(o):
+    return _unittest.skipIf(_mpi_size == 1, "Skipped during serial testing.")(o)
+
+
 def skip_parallel(o):
     return _unittest.skipIf(_mpi_size > 1, "Skipped during parallel testing.")(o)
-
-
-def single_process_test(o):
-    if _inspect.isclass(o) and issubclass(o, _unittest.TestCase):
-        return _unittest.skipIf(_mpi_size > 1, "Single process test.")(o)
-    elif callable(o):
-
-        def wrapper(*args, **kwargs):
-            if MPI.get_rank() == 0:
-                o(*args, **kwargs)
-            else:
-                return
-
-        return wrapper
-
-
-def multi_process_test(o):
-    if _inspect.isclass(o) and issubclass(o, _unittest.TestCase):
-        return _unittest.skipIf(_mpi_size < 2, "Multi process test.")(o)
-    elif callable(o):
-
-        def wrapper(*args, **kwargs):
-            if _mpi_size > 1:
-                o(*args, **kwargs)
-            else:
-                return
-
-        return wrapper
 
 
 _exc_threads = {}
