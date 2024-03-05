@@ -2,10 +2,14 @@
 Helpers for better and more complete tests for component developers of the BSB framework.
 """
 
+import contextlib
 import glob as _glob
 import os as _os
+import random
 import typing
 import unittest
+from collections import defaultdict
+from importlib.metadata import EntryPoint
 from pathlib import Path
 
 import numpy as _np
@@ -13,10 +17,10 @@ import requests
 from bsb.config import Configuration as _Configuration
 from bsb.core import Scaffold as _Scaffold
 from bsb.morphologies import parse_morphology_file
+from bsb.storage._files import UrlScheme
 from bsb.storage import Chunk as _Chunk
 from bsb.storage import Storage as _Storage
 from bsb.storage import get_engine_node as _get_engine_node
-from bsb.storage._files import UrlScheme
 
 from .configs import (
     get_test_config,
@@ -33,7 +37,7 @@ if typing.TYPE_CHECKING:
     from bsb.storage import Storage
 
 
-__version__ = "0.0.0b11"
+__version__ = "0.0.0b12"
 
 
 class NetworkFixture:
@@ -223,3 +227,59 @@ def skipIfOffline(url=None, scheme: UrlScheme = None):
     except Exception:
         offline = True
     return unittest.skipIf(offline, err_msg)
+
+
+class SpoofedEntryPoint(EntryPoint):
+    def __new__(cls, name, value, group, advert):
+        return super().__new__(cls, name, value, group)
+
+    def __init__(self, name, value, group, advert):
+        self._advert = advert
+
+    def load(self):
+        return self._advert
+
+
+@contextlib.contextmanager
+def plugin_context(plugin_dict):
+    import bsb.plugins
+
+    eps = defaultdict(list)
+    for cat, plugins in plugin_dict.items():
+        for name, plugin in plugins.items():
+            r = "".join(chr(random.randint(65, 90)) for _ in range(20))
+            ep = SpoofedEntryPoint(name, f"__spoofed__.{cat}:{r}", cat, plugin)
+            eps[cat].append(ep)
+            bsb.plugins._unittest_plugins[cat].append(ep)
+    yield
+    for cat, plugins in eps.items():
+        for plugin in plugins:
+            bsb.plugins._unittest_plugins[cat].remove(plugin)
+
+
+def spoof_plugin(category, name, obj):
+    return spoof_plugins({category: {name: obj}})
+
+
+def spoof_plugins(plugin_dict):
+    def decorator(f):
+        def spoofed(*args, **kwargs):
+            _invalidate_plugin_caches()
+            with plugin_context(plugin_dict):
+                ret = f(*args, **kwargs)
+            _invalidate_plugin_caches()
+            return ret
+
+        return spoofed
+
+    return decorator
+
+
+def _invalidate_plugin_caches():
+    from bsb.storage._files import _get_schemes
+    from bsb.simulation._backends import get_backends
+    from bsb.config._make import get_component_plugins
+
+    get_component_plugins.cache_clear()
+    get_backends.cache_clear()
+    _get_schemes.cache_clear()
