@@ -37,7 +37,7 @@ if typing.TYPE_CHECKING:
     from bsb.storage import Storage
 
 
-__version__ = "0.0.0b13"
+__version__ = "0.0.0b14"
 
 
 class NetworkFixture:
@@ -231,10 +231,17 @@ def skipIfOffline(url=None, scheme: UrlScheme = None):
 
 class SpoofedEntryPoint(EntryPoint):
     def __new__(cls, name, value, group, advert):
-        return super().__new__(cls, name, value, group)
+        try:
+            return super().__new__(cls, name, value, group)
+        except TypeError:
+            return super().__new__(cls)
 
     def __init__(self, name, value, group, advert):
-        self._advert = advert
+        try:
+            super().__init__(name, value, group)
+        except TypeError:
+            super().__init__()
+        self.__dict__["_advert"] = advert
 
     def load(self):
         return self._advert
