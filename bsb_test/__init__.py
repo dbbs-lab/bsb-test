@@ -17,10 +17,10 @@ import requests
 from bsb.config import Configuration as _Configuration
 from bsb.core import Scaffold as _Scaffold
 from bsb.morphologies import parse_morphology_file
-from bsb.storage._files import UrlScheme
 from bsb.storage import Chunk as _Chunk
 from bsb.storage import Storage as _Storage
 from bsb.storage import get_engine_node as _get_engine_node
+from bsb.storage._files import UrlScheme
 
 from .configs import (
     get_test_config,
@@ -276,9 +276,9 @@ def spoof_plugins(plugin_dict):
 
 
 def _invalidate_plugin_caches():
-    from bsb.storage._files import _get_schemes
-    from bsb.simulation._backends import get_backends
     from bsb.config._make import get_component_plugins
+    from bsb.simulation._backends import get_backends
+    from bsb.storage._files import _get_schemes
 
     get_component_plugins.cache_clear()
     get_backends.cache_clear()
