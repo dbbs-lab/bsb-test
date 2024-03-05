@@ -37,7 +37,7 @@ if typing.TYPE_CHECKING:
     from bsb.storage import Storage
 
 
-__version__ = "0.0.0b12"
+__version__ = "0.0.0b13"
 
 
 class NetworkFixture:
@@ -276,10 +276,10 @@ def spoof_plugins(plugin_dict):
 
 
 def _invalidate_plugin_caches():
-    from bsb.config._make import get_component_plugins
+    from bsb.config._make import load_component_plugins
     from bsb.simulation._backends import get_backends
     from bsb.storage._files import _get_schemes
 
-    get_component_plugins.cache_clear()
+    load_component_plugins.cache_clear()
     get_backends.cache_clear()
     _get_schemes.cache_clear()
