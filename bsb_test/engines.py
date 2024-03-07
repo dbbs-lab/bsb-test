@@ -22,7 +22,7 @@ from bsb.cell_types import CellType
 from bsb.config import Configuration
 from bsb.core import Scaffold
 from bsb.exceptions import DatasetExistsError, DatasetNotFoundError
-from bsb.morphologies import Morphology, MorphologySet
+from bsb.morphologies import Morphology, MorphologySet, parse_morphology_file
 from bsb.services import MPI
 from bsb.storage import Chunk, Storage
 
@@ -32,7 +32,7 @@ from . import (
     RandomStorageFixture,
     get_all_morphology_paths,
     get_morphology_path,
-    single_process_test,
+    skip_parallel,
     timeout,
 )
 
@@ -189,7 +189,7 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
             MPI.barrier()
         self.assertFalse(exists(engine, ct), "removed ps should not exist")
 
-    @single_process_test
+    @skip_parallel
     def test_require(self):
         ct2 = CellType(name="hehe", spatial=dict(radius=2, density=1e-3))
         # Test that we can create the PS
@@ -245,8 +245,8 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
 
     def test_load_morphologies(self):
         self.network.cell_types.test_cell.spatial.morphologies.append(dict(names=["test_cell_A", "test_cell_B"]))
-        mA = Morphology.from_swc(get_morphology_path("2branch.swc"))
-        mB = Morphology.from_swc(get_morphology_path("2comp.swc"))
+        mA = parse_morphology_file(get_morphology_path("2branch.swc"))
+        mB = parse_morphology_file(get_morphology_path("2comp.swc"))
         self.network.morphologies.save("test_cell_A", mA, overwrite=True)
         self.network.morphologies.save("test_cell_B", mB, overwrite=True)
         for i in range(10):
@@ -273,8 +273,8 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
 
     def test_load_no_rotations(self):
         self.network.cell_types.test_cell.spatial.morphologies.append(dict(names=["test_cell_A", "test_cell_B"]))
-        mA = Morphology.from_swc(get_morphology_path("2branch.swc"))
-        mB = Morphology.from_swc(get_morphology_path("2comp.swc"))
+        mA = parse_morphology_file(get_morphology_path("2branch.swc"))
+        mB = parse_morphology_file(get_morphology_path("2comp.swc"))
         self.network.morphologies.save("test_cell_A", mA, overwrite=True)
         self.network.morphologies.save("test_cell_B", mB, overwrite=True)
         self.network.compile(clear=True)
@@ -289,8 +289,8 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
     def test_load_rotations(self):
         self.network.cell_types.test_cell.spatial.morphologies.append(dict(names=["test_cell_A", "test_cell_B"]))
         self.network.placement.ch4_c25.distribute.rotations = dict(strategy="random")
-        mA = Morphology.from_swc(get_morphology_path("2branch.swc"))
-        mB = Morphology.from_swc(get_morphology_path("2comp.swc"))
+        mA = parse_morphology_file(get_morphology_path("2branch.swc"))
+        mB = parse_morphology_file(get_morphology_path("2comp.swc"))
         self.network.morphologies.save("test_cell_A", mA, overwrite=True)
         self.network.morphologies.save("test_cell_B", mB, overwrite=True)
         self.network.compile(clear=True)
@@ -329,7 +329,7 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
             "Network was compiled with FixedPositions," + " but different positions were found.",
         )
 
-    @single_process_test
+    @skip_parallel
     def test_chunk_size(self):
         ps = self.network.get_placement_set("test_cell")
         ps.append_data([0, 0, 0], [])
@@ -349,7 +349,7 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
             + f" Instead `{chunks[0].dimensions}` was found.",
         )
 
-    @single_process_test
+    @skip_parallel
     def test_list_input(self):
         ps = self.network.get_placement_set("test_cell")
         try:
@@ -383,7 +383,7 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
         if MPI.get_rank():
             MPI.barrier()
         else:
-            mA = Morphology.from_swc(get_morphology_path("2comp.swc"))
+            mA = parse_morphology_file(get_morphology_path("2comp.swc"))
             self.network.morphologies.save("testA", mA)
             MPI.barrier()
         self.network.cell_types.test_cell.spatial.morphologies = [{"names": ["testA"]}]
@@ -415,21 +415,21 @@ class TestMorphologyRepository(NumpyTestCase, RandomStorageFixture, engine_name=
         super().setUp()
         self.mr = self.storage.morphologies
 
-    @single_process_test
+    @skip_parallel
     def test_swc_saveload_eq(self):
         for path in get_all_morphology_paths(".swc"):
             with self.subTest(morpho=path.split("/")[-1]):
-                m = Morphology.from_swc(path)
+                m = parse_morphology_file(path)
                 self.mr.save("X", m, overwrite=True)
                 lm = self.mr.load("X")
                 self.assertEqual(m, lm, "equality violated")
             break
 
-    @single_process_test
+    @skip_parallel
     def test_swc_saveload(self):
         for path in get_all_morphology_paths(".swc"):
             with self.subTest(morpho=path.split("/")[-1]):
-                m = Morphology.from_swc(path)
+                m = parse_morphology_file(path)
                 self.mr.save("X", m, overwrite=True)
                 lm = self.mr.load("X")
                 self.assertEqual(len(m.branches), len(lm.branches), "num branches changed")
@@ -447,11 +447,11 @@ class TestMorphologyRepository(NumpyTestCase, RandomStorageFixture, engine_name=
                     )
                     self.assertClose(b1.points, b2.points, f"branch {i} points changed")
 
-    @single_process_test
+    @skip_parallel
     def test_swc_ldc_mdc(self):
         for path in get_all_morphology_paths(".swc"):
             with self.subTest(morpho=path.split("/")[-1]):
-                m = Morphology.from_swc(path)
+                m = parse_morphology_file(path)
                 self.mr.save("pc", m, overwrite=True)
                 m = self.mr.load("pc")
                 self.assertIn("mdc", m.meta, "missing mdc in loaded morphology")
@@ -526,7 +526,7 @@ class TestConnectivitySet(FixedPosConfigFixture, RandomStorageFixture, NumpyTest
             self.assertClose(100, c, "expected 25 local sources per global cell")
         self.assertEqual(100 * 100, len(self.network.get_connectivity_set("all_to_all")))
 
-    @single_process_test
+    @skip_parallel
     def test_connect_connect(self):
         ct = self.network.cell_types.add("new_cell", dict(spatial=dict(radius=2, density=1e-3)))
         self.network.place_cells(ct, [[0, 0, 0], [1, 1, 1], [2, 2, 2]], chunk=[0, 0, 0])
