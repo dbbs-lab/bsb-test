@@ -15,13 +15,13 @@ from pathlib import Path
 import numpy as _np
 import requests
 from bsb import (
-    Configuration as _Configuration,
-    Scaffold as _Scaffold,
-    parse_morphology_file as _parse,
-    Chunk as _Chunk,
-    Storage as _Storage,
-    get_engine_node as _get_engine_node,
+    Chunk,
+    Configuration,
+    Scaffold,
+    Storage,
     UrlScheme,
+    get_engine_node,
+    parse_morphology_file,
 )
 
 from .configs import (
@@ -37,7 +37,7 @@ if typing.TYPE_CHECKING:
     from bsb import Configuration, Scaffold, Storage
 
 
-__version__ = "0.0.0-rc1"
+__version__ = "4.0.0-rc2"
 
 
 class NetworkFixture:
@@ -53,7 +53,7 @@ class NetworkFixture:
             kwargs["storage"] = self.storage
         except Exception:
             pass
-        self.network = _Scaffold(**kwargs)
+        self.network = Scaffold(**kwargs)
         super().setUp()
 
 
@@ -92,8 +92,8 @@ class RandomStorageFixture:
             rstr = cls._rootf()
         else:
             # Get the engine's storage node default value, assuming it is random
-            rstr = _get_engine_node(cls._engine)(engine=cls._engine).root
-        s = _Storage(cls._engine, rstr)
+            rstr = get_engine_node(cls._engine)(engine=cls._engine).root
+        s = Storage(cls._engine, rstr)
         cls._open_storages.append(s)
         return s
 
@@ -102,7 +102,7 @@ class FixedPosConfigFixture:
     cfg: "Configuration"
 
     def setUp(self):
-        self.cfg = _Configuration.default(
+        self.cfg = Configuration.default(
             cell_types=dict(test_cell=dict(spatial=dict(radius=2, count=100))),
             placement=dict(
                 ch4_c25=dict(
@@ -114,10 +114,10 @@ class FixedPosConfigFixture:
         )
         self.chunk_size = cs = self.cfg.network.chunk_size
         self.chunks = [
-            _Chunk((0, 0, 0), cs),
-            _Chunk((0, 0, 1), cs),
-            _Chunk((1, 0, 0), cs),
-            _Chunk((1, 0, 1), cs),
+            Chunk((0, 0, 0), cs),
+            Chunk((0, 0, 1), cs),
+            Chunk((1, 0, 0), cs),
+            Chunk((1, 0, 1), cs),
         ]
         self.cfg.placement.ch4_c25.positions = MPI.bcast(
             _np.vstack(
@@ -158,9 +158,9 @@ class MorphologiesFixture:
                 if self._morpho_filters and all(mpath.find(filter) == -1 for filter in self._morpho_filters):
                     continue
                 if mpath.endswith("swc"):
-                    self.network.morphologies.save(Path(mpath).stem, _parse(mpath))
+                    self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath))
                 else:
-                    self.network.morphologies.save(Path(mpath).stem, _parse(mpath, parser="morphio"))
+                    self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath, parser="morphio"))
             MPI.barrier()
         super().setUp()
 

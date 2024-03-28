@@ -9,10 +9,10 @@ readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
 dynamic = ["version", "description"]
-dependencies = ["bsb-core>=4.0.0rc0,<=4.0.0rc9999"]
+dependencies = ["bsb-core==4.0.0rc2"]
 
 [project.optional-dependencies]
-test = ["bsb-core[parallel]", "bsb-hdf5>=1.0.0rc0", "coverage~=7.0"]
+test = ["bsb-core[parallel]", "bsb-hdf5==4.0.0rc2", "coverage~=7.0"]
 
 [tool.flit.module]
 name = "bsb_test"
@@ -24,7 +24,7 @@ line-length=120
 profile = "black"
 
 [tool.bumpversion]
-current_version = "0.0.0-rc1"
+current_version = "4.0.0-rc2"
 parse = """(?x)
     (?P<major>0|[1-9]\\d*)\\.
     (?P<minor>0|[1-9]\\d*)\\.
