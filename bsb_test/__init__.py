@@ -14,13 +14,15 @@ from pathlib import Path
 
 import numpy as _np
 import requests
-from bsb.config import Configuration as _Configuration
-from bsb.core import Scaffold as _Scaffold
-from bsb.morphologies import parse_morphology_file
-from bsb.storage import Chunk as _Chunk
-from bsb.storage import Storage as _Storage
-from bsb.storage import get_engine_node as _get_engine_node
-from bsb.storage._files import UrlScheme
+from bsb import (
+    Configuration as _Configuration,
+    Scaffold as _Scaffold,
+    parse_morphology_file as _parse,
+    Chunk as _Chunk,
+    Storage as _Storage,
+    get_engine_node as _get_engine_node,
+    UrlScheme,
+)
 
 from .configs import (
     get_test_config,
@@ -32,12 +34,10 @@ from .exceptions import FixtureError
 from .parallel import *
 
 if typing.TYPE_CHECKING:
-    from bsb.config import Configuration
-    from bsb.core import Scaffold
-    from bsb.storage import Storage
+    from bsb import Configuration, Scaffold, Storage
 
 
-__version__ = "0.0.0-b16"
+__version__ = "0.0.0-b18"
 
 
 class NetworkFixture:
@@ -158,9 +158,9 @@ class MorphologiesFixture:
                 if self._morpho_filters and all(mpath.find(filter) == -1 for filter in self._morpho_filters):
                     continue
                 if mpath.endswith("swc"):
-                    self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath))
+                    self.network.morphologies.save(Path(mpath).stem, _parse(mpath))
                 else:
-                    self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath, parser="morphio"))
+                    self.network.morphologies.save(Path(mpath).stem, _parse(mpath, parser="morphio"))
             MPI.barrier()
         super().setUp()
 
