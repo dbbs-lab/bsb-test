@@ -11,7 +11,7 @@ tree = {
     },
     "placement": {
         "placement": {
-            "strategy": "bsb.placement.ParticlePlacement",
+            "strategy": "bsb.placement.RandomPlacement",
             "cell_types": ["from_cell", "to_cell"],
             "partitions": ["test_layer"],
         }

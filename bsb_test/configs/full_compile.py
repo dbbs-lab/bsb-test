@@ -66,7 +66,7 @@ tree = {
             "cell_types": ["mossy_fibers"],
         },
         "granular_layer_placement": {
-            "strategy": "bsb.placement.ParticlePlacement",
+            "strategy": "bsb.placement.RandomPlacement",
             "partitions": ["granular_layer"],
             "cell_types": ["granule_cell", "golgi_cell", "glomerulus"],
         },
@@ -78,28 +78,22 @@ tree = {
             "angle": 70.0,
         },
         "b_molecular_layer_placement": {
-            "strategy": "bsb.placement.ParticlePlacement",
+            "strategy": "bsb.placement.RandomPlacement",
             "partitions": ["b_molecular_layer"],
             "cell_types": ["basket_cell"],
         },
         "t_molecular_layer_placement": {
-            "strategy": "bsb.placement.ParticlePlacement",
+            "strategy": "bsb.placement.RandomPlacement",
             "partitions": ["t_molecular_layer"],
             "cell_types": ["stellate_cell"],
         },
         "dcn_placement": {
-            "strategy": "bsb.placement.ParticlePlacement",
+            "strategy": "bsb.placement.RandomPlacement",
             "partitions": ["dcn_layer"],
             "cell_types": ["dcn_cell"],
         },
-        "dcn_satellite_placement": {
-            "strategy": "bsb.placement.Satellite",
-            "cell_types": ["dcn_interneuron"],
-            "planet_types": ["dcn_cell"],
-            "per_planet": 1.0,
-        },
         "io_layer_placement": {
-            "strategy": "bsb.placement.ParticlePlacement",
+            "strategy": "bsb.placement.RandomPlacement",
             "partitions": ["io_layer"],
             "cell_types": ["io_cell"],
         },

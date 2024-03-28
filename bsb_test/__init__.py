@@ -37,7 +37,7 @@ if typing.TYPE_CHECKING:
     from bsb import Configuration, Scaffold, Storage
 
 
-__version__ = "0.0.0-b18"
+__version__ = "0.0.0-b19"
 
 
 class NetworkFixture:
