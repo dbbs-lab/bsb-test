@@ -2,7 +2,7 @@ import http.client as _http
 import threading as _threading
 import unittest as _unittest
 
-from bsb.services import MPI
+from bsb import MPI
 
 _mpi_size = MPI.get_size()
 

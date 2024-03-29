@@ -1,6 +1,4 @@
-from bsb import config
-from bsb.config import types
-from bsb.connectivity import ConnectionStrategy
+from bsb import ConnectionStrategy, config, types
 
 
 @config.node

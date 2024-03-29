@@ -18,13 +18,18 @@ import time
 from collections import defaultdict
 
 import numpy as np
-from bsb.cell_types import CellType
-from bsb.config import Configuration
-from bsb.core import Scaffold
-from bsb.exceptions import DatasetExistsError, DatasetNotFoundError
-from bsb.morphologies import Morphology, MorphologySet, parse_morphology_file
-from bsb.services import MPI
-from bsb.storage import Chunk, Storage
+from bsb import (
+    MPI,
+    CellType,
+    Chunk,
+    Configuration,
+    DatasetExistsError,
+    DatasetNotFoundError,
+    MorphologySet,
+    Scaffold,
+    Storage,
+    parse_morphology_file,
+)
 
 from . import (
     FixedPosConfigFixture,
