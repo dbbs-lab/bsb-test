@@ -23,6 +23,12 @@ tree = {
             "presynaptic": {"cell_types": ["excitatory"]},
             "postsynaptic": {"cell_types": ["inhibitory"]},
         },
+        "outdegree": {
+            "strategy": "bsb.connectivity.FixedOutdegree",
+            "outdegree": 50,
+            "presynaptic": {"cell_types": ["excitatory"]},
+            "postsynaptic": {"cell_types": ["inhibitory"]},
+        },
         "multi_indegree": {
             "strategy": "bsb.connectivity.FixedIndegree",
             "indegree": 50,
