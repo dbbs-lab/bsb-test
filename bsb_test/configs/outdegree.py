@@ -17,15 +17,15 @@ tree = {
         }
     },
     "connectivity": {
-        "indegree": {
-            "strategy": "bsb.connectivity.FixedIndegree",
-            "indegree": 50,
+        "outdegree": {
+            "strategy": "bsb.connectivity.FixedOutdegree",
+            "outdegree": 50,
             "presynaptic": {"cell_types": ["excitatory"]},
             "postsynaptic": {"cell_types": ["inhibitory"]},
         },
-        "multi_indegree": {
-            "strategy": "bsb.connectivity.FixedIndegree",
-            "indegree": 50,
+        "multi_outdegree": {
+            "strategy": "bsb.connectivity.FixedOutdegree",
+            "outdegree": 50,
             "presynaptic": {"cell_types": ["excitatory", "extra"]},
             "postsynaptic": {"cell_types": ["inhibitory", "extra"]},
         },
