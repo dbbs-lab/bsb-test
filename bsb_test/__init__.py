@@ -60,7 +60,9 @@ class NetworkFixture:
 class RandomStorageFixture:
     storage: "Storage"
 
-    def __init_subclass__(cls, root_factory=None, debug=False, setup_cls=False, *, engine_name, **kwargs):
+    def __init_subclass__(
+        cls, root_factory=None, debug=False, setup_cls=False, *, engine_name, **kwargs
+    ):
         super().__init_subclass__(**kwargs)
         cls._engine = engine_name
         cls._rootf = root_factory
@@ -150,17 +152,25 @@ class MorphologiesFixture:
 
     def setUp(self):
         if not hasattr(self, "network"):
-            raise FixtureError(f"{self.__class__.__name__} uses MorphologiesFixture, which requires a network fixture.")
+            raise FixtureError(
+                f"{self.__class__.__name__} uses MorphologiesFixture, which requires a network fixture."
+            )
         if MPI.get_rank():
             MPI.barrier()
         else:
             for mpath in get_all_morphology_paths(self._morpho_suffix):
-                if self._morpho_filters and all(mpath.find(filter) == -1 for filter in self._morpho_filters):
+                if self._morpho_filters and all(
+                    mpath.find(filter) == -1 for filter in self._morpho_filters
+                ):
                     continue
                 if mpath.endswith("swc"):
-                    self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath))
+                    self.network.morphologies.save(
+                        Path(mpath).stem, parse_morphology_file(mpath)
+                    )
                 else:
-                    self.network.morphologies.save(Path(mpath).stem, parse_morphology_file(mpath, parser="morphio"))
+                    self.network.morphologies.save(
+                        Path(mpath).stem, parse_morphology_file(mpath, parser="morphio")
+                    )
             MPI.barrier()
         super().setUp()
 
@@ -169,26 +179,34 @@ class NumpyTestCase:
     def assertClose(self, a, b, msg="", /, **kwargs):
         if msg:
             msg += ". "
-        return self.assertTrue(_np.allclose(a, b, **kwargs), f"{msg}Expected {a}, got {b}")
+        return self.assertTrue(
+            _np.allclose(a, b, **kwargs), f"{msg}Expected {a}, got {b}"
+        )
 
     def assertNotClose(self, a, b, msg="", /, **kwargs):
         if msg:
             msg += ". "
-        return self.assertFalse(_np.allclose(a, b, **kwargs), f"{msg}Expected {a}, got {b}")
+        return self.assertFalse(
+            _np.allclose(a, b, **kwargs), f"{msg}Expected {a}, got {b}"
+        )
 
     def assertAll(self, a, msg="", /, **kwargs):
         trues = _np.sum(a.astype(bool))
         all = _np.prod(a.shape)
         if msg:
             msg += ". "
-        return self.assertTrue(_np.all(a, **kwargs), f"{msg}Only {trues} out of {all} True")
+        return self.assertTrue(
+            _np.all(a, **kwargs), f"{msg}Only {trues} out of {all} True"
+        )
 
     def assertNan(self, a, msg="", /, **kwargs):
         if msg:
             msg += ". "
         nans = _np.isnan(a)
         all = _np.prod(a.shape)
-        return self.assertTrue(_np.all(a, **kwargs), f"{msg}Only {_np.sum(nans)} out of {all} True")
+        return self.assertTrue(
+            _np.all(a, **kwargs), f"{msg}Only {_np.sum(nans)} out of {all} True"
+        )
 
 
 def get_data_path(*paths):

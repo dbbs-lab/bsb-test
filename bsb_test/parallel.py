@@ -50,7 +50,9 @@ def _excepthook(f):
 def timeout(timeout, abort=False):
     def decorator(f):
         def timed_f(*args, **kwargs):
-            thread = _threading.Thread(target=_excepthook(f), args=args, kwargs=kwargs, daemon=True)
+            thread = _threading.Thread(
+                target=_excepthook(f), args=args, kwargs=kwargs, daemon=True
+            )
             thread.start()
             thread.join(timeout=timeout)
             try:

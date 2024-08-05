@@ -22,18 +22,29 @@ def get_test_config(name: str):
 
 
 def get_test_configs(available_plugins=None):
-    return {n: get_test_config(n) for n in list_test_configs(available_plugins=available_plugins)}
+    return {
+        n: get_test_config(n)
+        for n in list_test_configs(available_plugins=available_plugins)
+    }
 
 
 def list_test_configs(available_plugins=None):
     available_plugins = available_plugins or []
-    config_names = [p.stem for p in pathlib.Path(__file__).parent.glob("*.py") if p.name != "__init__.py"]
+    config_names = [
+        p.stem
+        for p in pathlib.Path(__file__).parent.glob("*.py")
+        if p.name != "__init__.py"
+    ]
     return [
         name
         for name in config_names
         # Include the test config only if all the required plugins are available
         if (
-            not (req := getattr((mod := get_test_config_module(name)), "required_plugins", None))
+            not (
+                req := getattr(
+                    (mod := get_test_config_module(name)), "required_plugins", None
+                )
+            )
             or all(p in available_plugins for p in req)
         )
     ]

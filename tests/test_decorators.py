@@ -37,7 +37,12 @@ class TestPluginTesting(unittest.TestCase):
     def test_spoof_plugins(self):
         spy = None
 
-        @spoof_plugins({"cat": {"thing1": [5, 6, 7], "thing2": [5, 6, 7, "oh"]}, "dog": {"thing3": ["ah"]}})
+        @spoof_plugins(
+            {
+                "cat": {"thing1": [5, 6, 7], "thing2": [5, 6, 7, "oh"]},
+                "dog": {"thing3": ["ah"]},
+            }
+        )
         def exec_spoof():
             nonlocal spy
             spy = discover("cat").copy()
@@ -64,6 +69,13 @@ class TestPluginTesting(unittest.TestCase):
         plugins into account.
         """
         pre_spoof = [*discover("simulation_backends").keys()]
-        with plugin_context({"simulation_backends": {"new": SimulationBackendPlugin([], [])}}):
-            self.assertEqual(sorted(["new", *pre_spoof]), sorted(discover("simulation_backends").keys()))
-        self.assertEqual(sorted(pre_spoof), sorted(discover("simulation_backends").keys()))
+        with plugin_context(
+            {"simulation_backends": {"new": SimulationBackendPlugin([], [])}}
+        ):
+            self.assertEqual(
+                sorted(["new", *pre_spoof]),
+                sorted(discover("simulation_backends").keys()),
+            )
+        self.assertEqual(
+            sorted(pre_spoof), sorted(discover("simulation_backends").keys())
+        )
