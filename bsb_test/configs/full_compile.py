@@ -13,12 +13,12 @@ tree = {
         "some_olive": {"type": "stack", "children": ["io_layer"]},
     },
     "partitions": {
-        "dcn_layer": {"thickness": 600.0, "stack_index": 0},
-        "granular_layer": {"thickness": 150.0, "stack_index": 1},
-        "purkinje_layer": {"thickness": 30.0, "stack_index": 2},
-        "b_molecular_layer": {"thickness": 50.0, "stack_index": 3},
-        "t_molecular_layer": {"thickness": 100.0, "stack_index": 4},
-        "io_layer": {"thickness": 15.0, "stack_index": 0},
+        "dcn_layer": {"thickness": 600.0},
+        "granular_layer": {"thickness": 150.0},
+        "purkinje_layer": {"thickness": 30.0},
+        "b_molecular_layer": {"thickness": 50.0},
+        "t_molecular_layer": {"thickness": 100.0},
+        "io_layer": {"thickness": 15.0},
     },
     "cell_types": {
         "granule_cell": {
