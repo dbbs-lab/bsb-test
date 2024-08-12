@@ -41,9 +41,7 @@ from . import (
     timeout,
 )
 
-cfg = Configuration.default(
-    cell_types=dict(test_cell=dict(spatial=dict(radius=2, density=1e-3)))
-)
+cfg = Configuration.default(cell_types=dict(test_cell=dict(spatial=dict(radius=2, density=1e-3))))
 
 
 class _ScaffoldDummy:
@@ -151,9 +149,7 @@ class TestEngine(RandomStorageFixture, engine_name=None):
         self.network = Scaffold(storage=self.storage)
 
 
-class TestPlacementSet(
-    FixedPosConfigFixture, RandomStorageFixture, NumpyTestCase, engine_name=None
-):
+class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCase, engine_name=None):
     def setUp(self):
         super().setUp()
         self.network = Scaffold(self.cfg, self.storage)
@@ -164,9 +160,7 @@ class TestPlacementSet(
         self.assertEqual(ct, ps.cell_type, "cell type incorrect")
         self.assertEqual(ct.name, ps.tag, "tag incorrect")
         ct2 = CellType(name="boo", spatial=dict(radius=2, density=1e-3))
-        with self.assertRaises(
-            DatasetNotFoundError, msg="should raise `DatasetNotFoundError` for unknown PS"
-        ):
+        with self.assertRaises(DatasetNotFoundError, msg="should raise `DatasetNotFoundError` for unknown PS"):
             self.network.get_placement_set(ct2)
 
     def test_create(self):
@@ -180,9 +174,7 @@ class TestPlacementSet(
             ps = self.storage._PlacementSet(self.storage._engine, ct)
         self.assertEqual("hehe", ps.tag, "tag should be cell type name")
         self.assertEqual(0, len(ps), "new ps should be empty")
-        with self.assertRaises(
-            DatasetExistsError, msg="creating existing PS should error"
-        ):
+        with self.assertRaises(DatasetExistsError, msg="creating existing PS should error"):
             ps = self.storage._PlacementSet.create(self.storage._engine, ct)
 
     def test_exists(self):
@@ -224,9 +216,7 @@ class TestPlacementSet(
     def test_get_all_chunks(self):
         self.network.compile()
         ps = self.network.get_placement_set("test_cell")
-        self.assertEqual(
-            sorted(self.chunks), sorted(ps.get_all_chunks()), "populated chunks incorrect"
-        )
+        self.assertEqual(sorted(self.chunks), sorted(ps.get_all_chunks()), "populated chunks incorrect")
 
     def test_load_ids(self):
         self.network.compile()
@@ -259,9 +249,7 @@ class TestPlacementSet(
             ps.load_morphologies()
 
     def test_load_morphologies(self):
-        self.network.cell_types.test_cell.spatial.morphologies.append(
-            dict(names=["test_cell_A", "test_cell_B"])
-        )
+        self.network.cell_types.test_cell.spatial.morphologies.append(dict(names=["test_cell_A", "test_cell_B"]))
         mA = parse_morphology_file(get_morphology_path("2branch.swc"))
         mB = parse_morphology_file(get_morphology_path("2comp.swc"))
         self.network.morphologies.save("test_cell_A", mA, overwrite=True)
@@ -282,20 +270,14 @@ class TestPlacementSet(
                 "It seems not all morphologies occur in random morphology distr."
                 + "\nShould find: 'test_cell_A', 'test_cell_B'"
                 + "\nFound: "
-                + ", ".join(
-                    f"'{m.meta['name']}'" for m in ms.iter_morphologies(unique=True)
-                )
+                + ", ".join(f"'{m.meta['name']}'" for m in ms.iter_morphologies(unique=True))
                 + "\nAll data:\n["
-                + ", ".join(
-                    f"'{m.meta['name']}'" for m in ms.iter_morphologies(hard_cache=True)
-                )
+                + ", ".join(f"'{m.meta['name']}'" for m in ms.iter_morphologies(hard_cache=True))
                 + "]"
             )
 
     def test_load_no_rotations(self):
-        self.network.cell_types.test_cell.spatial.morphologies.append(
-            dict(names=["test_cell_A", "test_cell_B"])
-        )
+        self.network.cell_types.test_cell.spatial.morphologies.append(dict(names=["test_cell_A", "test_cell_B"]))
         mA = parse_morphology_file(get_morphology_path("2branch.swc"))
         mB = parse_morphology_file(get_morphology_path("2comp.swc"))
         self.network.morphologies.save("test_cell_A", mA, overwrite=True)
@@ -310,9 +292,7 @@ class TestPlacementSet(
         self.assertEqual(len(ps), len(rot), "expected equal amounts of rotations")
 
     def test_load_rotations(self):
-        self.network.cell_types.test_cell.spatial.morphologies.append(
-            dict(names=["test_cell_A", "test_cell_B"])
-        )
+        self.network.cell_types.test_cell.spatial.morphologies.append(dict(names=["test_cell_A", "test_cell_B"]))
         self.network.placement.ch4_c25.distribute.rotations = dict(strategy="random")
         mA = parse_morphology_file(get_morphology_path("2branch.swc"))
         mB = parse_morphology_file(get_morphology_path("2comp.swc"))
@@ -351,8 +331,7 @@ class TestPlacementSet(
         self.assertClose(
             pos_sort,
             pspos_sort,
-            "Network was compiled with FixedPositions,"
-            + " but different positions were found.",
+            "Network was compiled with FixedPositions," + " but different positions were found.",
         )
 
     @skip_parallel
@@ -392,9 +371,7 @@ class TestPlacementSet(
                 "PlacementSet failed to append `list` typed data. PlacementSets should"
                 + " allow this short form to work: `.append_data([0, 0, 0], [[1,1,1]])`"
             )
-        self.assertEqual(
-            1, len(ps), f"PlacementSet placement {len(ps)} after 1 list type input"
-        )
+        self.assertEqual(1, len(ps), f"PlacementSet placement {len(ps)} after 1 list type input")
 
     def test_label(self):
         self.network.compile()
@@ -460,9 +437,7 @@ class TestMorphologyRepository(NumpyTestCase, RandomStorageFixture, engine_name=
                 m = parse_morphology_file(path)
                 self.mr.save("X", m, overwrite=True)
                 lm = self.mr.load("X")
-                self.assertEqual(
-                    len(m.branches), len(lm.branches), "num branches changed"
-                )
+                self.assertEqual(len(m.branches), len(lm.branches), "num branches changed")
                 self.assertEqual(
                     m.points.shape,
                     lm.points.shape,
@@ -488,9 +463,7 @@ class TestMorphologyRepository(NumpyTestCase, RandomStorageFixture, engine_name=
                 self.assertIn("ldc", m.meta, "missing ldc in loaded morphology")
 
 
-class TestConnectivitySet(
-    FixedPosConfigFixture, RandomStorageFixture, NumpyTestCase, engine_name=None
-):
+class TestConnectivitySet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCase, engine_name=None):
     def setUp(self):
         super().setUp()
         self.cfg.connectivity.add(
@@ -505,24 +478,16 @@ class TestConnectivitySet(
         self.network.compile(clear=True)
 
     def test_require(self):
-        ct = self.network.cell_types.add(
-            "new_cell", dict(spatial=dict(radius=2, density=1e-3))
-        )
-        self.network.require_connectivity_set(
-            ct, self.network.cell_types.test_cell, "test"
-        )
+        ct = self.network.cell_types.add("new_cell", dict(spatial=dict(radius=2, density=1e-3)))
+        self.network.require_connectivity_set(ct, self.network.cell_types.test_cell, "test")
         self.assertTrue(
             self.storage._ConnectivitySet.exists(self.storage._engine, "test"),
             "must exist after require",
         )
 
     def test_attrs(self):
-        ct = self.network.cell_types.add(
-            "new_cell", dict(spatial=dict(radius=2, density=1e-3))
-        )
-        self.network.require_connectivity_set(
-            ct, self.network.cell_types.test_cell, "test"
-        )
+        ct = self.network.cell_types.add("new_cell", dict(spatial=dict(radius=2, density=1e-3)))
+        self.network.require_connectivity_set(ct, self.network.cell_types.test_cell, "test")
         cs = self.storage._ConnectivitySet(self.storage._engine, "test")
         for attr in ("tag", "pre_type_name", "post_type_name"):
             with self.subTest(attr=attr):
@@ -568,9 +533,7 @@ class TestConnectivitySet(
 
     @skip_parallel
     def test_connect_connect(self):
-        ct = self.network.cell_types.add(
-            "new_cell", dict(spatial=dict(radius=2, density=1e-3))
-        )
+        ct = self.network.cell_types.add("new_cell", dict(spatial=dict(radius=2, density=1e-3)))
         self.network.place_cells(ct, [[0, 0, 0], [1, 1, 1], [2, 2, 2]], chunk=[0, 0, 0])
         self.network.place_cells(ct, [[3, 3, 3], [4, 4, 4]], chunk=[0, 0, 1])
         ps0 = self.network.get_placement_set(ct, [[0, 0, 0]])
@@ -584,9 +547,7 @@ class TestConnectivitySet(
             "After connecting empty data, the ConnectivitySet should remain empty.",
         )
         cs.connect(ps0, ps1, [[1, -1, -1]], [[1, -1, -1]])
-        self.assertEqual(
-            1, len(cs), "After making 1 connection, the ConnectivitySet should be len 1."
-        )
+        self.assertEqual(1, len(cs), "After making 1 connection, the ConnectivitySet should be len 1.")
         data = [*cs.flat_iter_connections("out")]
         self.assertEqual(
             1,
@@ -649,9 +610,7 @@ class TestConnectivitySet(
                     try:
                         locals_, globals_ = data
                     except TypeError:
-                        self.fail(
-                            "`nested_iter_connections` return value should be unpackable"
-                        )
+                        self.fail("`nested_iter_connections` return value should be unpackable")
                     except ValueError:
                         self.fail("`nested_iter_connections` should return 2 data values")
                     self.assertClose(625, len(locals_), "expected 625 local locs")
@@ -706,28 +665,20 @@ class TestConnectivitySet(
             f"expected {', '.join(dirs)} blocks",
         )
         for dir in dirs:
-            self.assertEqual(
-                perdir, spies["dirs"][dir], f"expected {perdir} {dir} blocks"
-            )
+            self.assertEqual(perdir, spies["dirs"][dir], f"expected {perdir} {dir} blocks")
         local_counts = dict(spies["lchunks"].items())
-        self.assertEqual(
-            lcount, len(list(local_counts.keys())), f"expected {lcount} local chunks"
-        )
+        self.assertEqual(lcount, len(list(local_counts.keys())), f"expected {lcount} local chunks")
         self.assertClose(
             dircount * gcount,
             list(local_counts.values()),
-            "expected each local chunk to occur"
-            f" {dircount} x {gcount} times: {local_counts}",
+            "expected each local chunk to occur" f" {dircount} x {gcount} times: {local_counts}",
         )
         global_counts = dict(spies["gchunks"].items())
-        self.assertEqual(
-            gcount, len(list(global_counts.keys())), f"expected {gcount} global chunks"
-        )
+        self.assertEqual(gcount, len(list(global_counts.keys())), f"expected {gcount} global chunks")
         self.assertClose(
             dircount * lcount,
             list(global_counts.values()),
-            "expected each global chunk to occur"
-            f" {dircount} x {lcount} times: {global_counts}",
+            "expected each global chunk to occur" f" {dircount} x {lcount} times: {global_counts}",
         )
         self.assertClose(
             2,

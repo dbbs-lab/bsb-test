@@ -75,18 +75,10 @@ tree = {
                 },
             },
             "connection_models": {
-                "excitatory_to_excitatory": {
-                    "synapse": {"weight": 20.68015524367846, "delay": 1.5}
-                },
-                "excitatory_to_inhibitory": {
-                    "synapse": {"weight": 20.68015524367846, "delay": 1.5}
-                },
-                "inhibitory_to_excitatory": {
-                    "synapse": {"weight": -103.4007762183923, "delay": 1.5}
-                },
-                "inhibitory_to_inhibitory": {
-                    "synapse": {"weight": -103.4007762183923, "delay": 1.5}
-                },
+                "excitatory_to_excitatory": {"synapse": {"weight": 20.68015524367846, "delay": 1.5}},
+                "excitatory_to_inhibitory": {"synapse": {"weight": 20.68015524367846, "delay": 1.5}},
+                "inhibitory_to_excitatory": {"synapse": {"weight": -103.4007762183923, "delay": 1.5}},
+                "inhibitory_to_inhibitory": {"synapse": {"weight": -103.4007762183923, "delay": 1.5}},
             },
             "devices": {
                 "pg": {
@@ -99,20 +91,12 @@ tree = {
                 "sr_exc": {
                     "device": "spike_recorder",
                     "delay": 1,
-                    "targetting": {
-                        "strategy": "cell_model",
-                        "cell_models": ["excitatory"],
-                        "count": 50,
-                    },
+                    "targetting": {"strategy": "cell_model", "cell_models": ["excitatory"], "count": 50},
                 },
                 "sr_inh": {
                     "device": "spike_recorder",
                     "delay": 1,
-                    "targetting": {
-                        "strategy": "cell_model",
-                        "cell_models": ["inhibitory"],
-                        "count": 50,
-                    },
+                    "targetting": {"strategy": "cell_model", "cell_models": ["inhibitory"], "count": 50},
                 },
             },
         },
@@ -162,19 +146,11 @@ tree = {
                 },
                 "sr_exc": {
                     "device": "spike_recorder",
-                    "targetting": {
-                        "strategy": "cell_model",
-                        "cell_models": ["excitatory"],
-                        "count": 50,
-                    },
+                    "targetting": {"strategy": "cell_model", "cell_models": ["excitatory"], "count": 50},
                 },
                 "sr_inh": {
                     "device": "spike_recorder",
-                    "targetting": {
-                        "strategy": "cell_model",
-                        "cell_models": ["inhibitory"],
-                        "count": 50,
-                    },
+                    "targetting": {"strategy": "cell_model", "cell_models": ["inhibitory"], "count": 50},
                 },
             },
         },
