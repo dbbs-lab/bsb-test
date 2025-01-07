@@ -3,7 +3,7 @@
 
 # bsb-test
 
-bsb-test is a pluggin of [BSB](https://github.com/dbbs-lab/bsb) (see also 
+bsb-test is a plugin of the [BSB](https://github.com/dbbs-lab/bsb) (see also 
 [bsb-core](https://github.com/dbbs-lab/bsb-core)). 
 It contains configurations and tools to test BSB code.
 
