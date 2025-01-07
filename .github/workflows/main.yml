@@ -114,8 +114,8 @@ jobs:
         uses: requarks/changelog-action@v1
         with:
           token: ${{ steps.app-token.outputs.token }}
-          fromTag: ${{ needs.tag_release.outputs.tag }}
-          toTag: ${{ needs.tag_release.outputs.old_tag }}
+          fromTag: ${{ needs.bump.outputs.tag }}
+          toTag: ${{ needs.bump.outputs.old_tag }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
@@ -123,8 +123,8 @@ jobs:
           allowUpdates: true
           draft: false
           makeLatest: true
-          tag: ${{ needs.tag_release.outputs.tag }}
-          name: ${{ needs.tag_release.outputs.tag }}
+          tag: ${{ needs.bump.outputs.tag }}
+          name: ${{ needs.bump.outputs.tag }}
           body: ${{ steps.changelog.outputs.changes }}
           token: ${{ steps.app-token.outputs.token }}
 
