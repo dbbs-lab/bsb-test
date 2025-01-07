@@ -11,4 +11,5 @@
 
 ### New Contributors
 * @drodarie made their first contribution in https://github.com/dbbs-lab/bsb-test/pull/5
+
 [v4.2.0]: https://github.com/dbbs-lab/bsb-test/compare/v4.1.0...v4.2.0
