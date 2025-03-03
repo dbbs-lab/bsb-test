@@ -1,3 +1,8 @@
+## [v4.2.3] - 2025-03-03
+### :bug: Bug Fixes
+- [`5e6650d`](https://github.com/dbbs-lab/bsb-test/commit/5e6650dd9d6190b7ab5a411d66f5cad2a75e751b) - using isort 6.0.0 and black 25.1.0 *(PR [#11](https://github.com/dbbs-lab/bsb-test/pull/11) by [@drodarie](https://github.com/drodarie))*
+
+
 ## [v4.2.2] - 2025-01-07
 ### :bug: Bug Fixes
 - [`9e6cf6a`](https://github.com/dbbs-lab/bsb-test/commit/9e6cf6afa590758c7470614187bc01caf09dfcd0) - GHA needs variables *(commit by [@drodarie](https://github.com/drodarie))*
@@ -19,3 +24,4 @@
 
 [v4.2.0]: https://github.com/dbbs-lab/bsb-test/compare/v4.1.0...v4.2.0
 [v4.2.2]: https://github.com/dbbs-lab/bsb-test/compare/v4.2.1...v4.2.2
+[v4.2.3]: https://github.com/dbbs-lab/bsb-test/compare/v4.2.2...v4.2.3
