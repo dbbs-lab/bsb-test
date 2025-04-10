@@ -377,11 +377,18 @@ class TestPlacementSet(FixedPosConfigFixture, RandomStorageFixture, NumpyTestCas
         self.network.compile()
         ps = self.network.get_placement_set("test_cell")
         cells_to_label = [33, 12, 0, 3, 77]
-        ps.label(["label1", "label2"], cells_to_label)
+        labels = ["label1", "label2"]
+        ps.label(labels, cells_to_label)
+        self.assertAll(np.asarray(ps.get_unique_labels()) == np.asarray([set(), set(labels)]))
         self.assertClose(
             np.sort(cells_to_label),
             ps.get_labelled(["label1"]),
             "Labels should be sort-order match to input",
+        )
+        self.assertClose(
+            np.delete(np.arange(len(ps)), cells_to_label),
+            ps.get_labelled(),
+            "Empty set should return all non labelled cells",
         )
 
     def test_label_filter(self):
